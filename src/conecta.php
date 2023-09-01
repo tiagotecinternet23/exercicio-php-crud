@@ -7,7 +7,7 @@ $banco = "crud_escola_leandro";
 
 try {
     $conexao = new PDO(
-        "mysql:host=$servidor;dbname=$banco;charset=utfb8", $usuarioi, $senha
+        "mysql:host=$servidor;dbname=$banco;charset=utf8", $usuario, $senha
     );
 
     $conexao->setAttribute(

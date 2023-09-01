@@ -1,3 +1,9 @@
+<?php
+    require_once "src/funcoes.php";
+
+$listadeAlunos = lerAlunos($conexao);
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -14,6 +20,8 @@
 
    <!-- Aqui você deverá criar o HTML que quiser e o PHP necessários
 para exibir a relação de alunos existentes no banco de dados.
+
+
 
 Obs.: não se esqueça de criar também os links dinâmicos para
 as páginas de atualização e exclusão. -->
