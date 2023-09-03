@@ -7,8 +7,8 @@ if(isset($_POST['inserir'])){
 	$segunda = filter_input(INPUT_POST, "segunda", FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
 	inserirAluno($conexao, $nome, $primeira, $segunda);
+	header("location:visualizar.php");
 }
-
 
 ?>
 

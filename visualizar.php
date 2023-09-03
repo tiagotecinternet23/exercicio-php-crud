@@ -10,13 +10,46 @@ $listadeAlunos = lerAlunos($conexao);
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lista de alunos - Exercício CRUD com PHP e MySQL</title>
+
+<style>
+        *{box-sizing: border-box;}
+
+        .alunos{
+            font-family: 'Segoe UI';
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 80%;
+            margin: auto;
+        }
+
+    </style>
+
 <link href="css/style.css" rel="stylesheet">
 </head>
+
 <body>
+
 <div class="container">
     <h1>Lista de alunos</h1>
     <hr>
     <p><a href="inserir.php">Inserir novo aluno</a></p>
+
+    <?php foreach($listaDeAlunos AS $aluno){
+       ?>
+       <div class="alunos"> 
+        <p><b>Nome: </b> <?=$aluno["nome"]?>
+        </p>
+        <p><b>Nota1: </b><?=$aluno["nota1"]?></p>
+        <p><b>Nota2: </b><?=$aluno["nota2"]?></p>
+
+        <hr>
+        <p> <a href="atualizar.php?id=<?=$aluno["id"]?>">Atualizar</a> </p>
+        <p> <a class="excluir" href="excluir.php?id=<?=$aluno["id"]?>">excluir</a> </p>
+</div>
+
+<?php } ?>
+
 
    <!-- Aqui você deverá criar o HTML que quiser e o PHP necessários
 para exibir a relação de alunos existentes no banco de dados.
@@ -28,7 +61,9 @@ as páginas de atualização e exclusão. -->
 
 
     <p><a href="index.php">Voltar ao início</a></p>
-</div>
+
+
+<script src="js/confirma-exclusao.js" ></script>
 
 </body>
 </html>
