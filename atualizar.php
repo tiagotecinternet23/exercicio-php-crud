@@ -1,15 +1,28 @@
 <?php
-require_once"src/funcoes-alunos.php";
+require_once"src/funcoes.php";
 $idAluno = filter_input(INPUT_GET, 'id',
 FILTER_SANITIZE_NUMBER_INT);
-
 $nomeDoAluno = lerUmAluno($conexao, $idAluno);
+
+$media = mediaAluno($nomeDoAluno["primeira"], $nomeDoAluno["segunda"]);
+$situacao = situacaoAluno($media);
+
 if (isset($_POST['atualizar'])) {
     $nomeDoAluno = filter_input(INPUT_POST, "nome", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    atualizarAluno($conexao, $nomeDoAluno, $idAluno);
+    $primeira = filter_input(INPUT_POST, "primeira", FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $segunda = filter_input(INPUT_POST, "segunda", FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+    atualizarAluno($conexao, $nomeDoAluno, $idAluno, $primeira, $segunda);
     header("location:visualizar.php?status=sucesso");
+    
+
 }
 ?>
+
+<pre>
+    <?=var_dump($nomeDoAluno)
+    ?>
+</pre>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -29,32 +42,20 @@ if (isset($_POST['atualizar'])) {
     <form action="#" method="post">
         
 	    <p><label for="nome">Nome:</label>
-	    <input type="text" name="nome" id="nome" required></p>
+	    <input value="<?=$nomeDoAluno["nome"]?>"  type="text" name="nome" id="nome" required></p>
         
         <p><label for="primeira">Primeira nota:</label>
-	    <input name="primeira" type="number" id="primeira" step="0.01" min="0.00" max="10.00" required></p>
+	    <input  value="<?=$nomeDoAluno["primeira"]?>" name="primeira" type="number" id="primeira" step="0.01" min="0.00" max="10.00" required></p>
 	    
 	    <p><label for="segunda">Segunda nota:</label>
-	    <input name="segunda" type="number" id="segunda" step="0.01" min="0.00" max="10.00" required></p>
+	    <input value="<?=$nomeDoAluno["segunda"]?>"  name="segunda" type="number" id="segunda" step="0.01" min="0.00" max="10.00" required></p>
 
         <p>
-            <?php
-                if($nomeDoAluno["media"] >= 7){
-                    $situacao = "Aprovado";
-                    
-                } elseif($nomeDoAluno["media"] >= 5){
-                    $situacao = "Recuperação";
-                    
-                } else {
-                    $situacao = "Reprovado";
-
-                }                    
-            ?>
-
+            
 <!-- Campo somente leitura e desabilitado para edição.
 Usado apenas para exibição do valor da média -->
             <label for="media">Média:</label>
-            <input name="media" type="number" id="media" step="0.01" min="0.00" max="10.00" readonly disabled>
+            <input value="<?=$media?>" name="media" type="number" id="media" step="0.01" min="0.00" max="10.00" readonly disabled>
         </p>
 
 
@@ -62,10 +63,10 @@ Usado apenas para exibição do valor da média -->
         <!-- Campo somente leitura e desabilitado para edição 
         Usado apenas para exibição do texto da situação -->
             <label for="situacao">Situação:</label>
-	        <input type="text" name="situacao" id="situacao" readonly disabled>
+	        <input value="<?=$situacao?>"  type="text" name="situacao" id="situacao" readonly disabled>
         </p>
 	    
-        <button name="atualizar-dados">Atualizar dados do aluno</button>
+        <button name="atualizar">Atualizar dados do aluno</button>
 	</form>    
     
     <hr>

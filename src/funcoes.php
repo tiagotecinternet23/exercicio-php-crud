@@ -49,13 +49,16 @@ function lerUmAluno(PDO $conexao, int $idAluno): array{
     return $resultado;
 }
 
-function atualizarAluno(PDO $conexao, string $nome, int $idAluno): void {
-    $sql = "UPDATE alunos SET nome = :nome WHERE id = :id";
+function atualizarAluno(PDO $conexao, string $nome, int $idAluno, float $primeira, float $segunda): void {
+    $sql = "UPDATE alunos SET nome = :nome, primeira = :primeira, segunda = :segunda WHERE id = :id";
+
 
     try {
         $consulta = $conexao->prepare($sql);
         $consulta->bindValue(":nome", $nome, PDO::PARAM_STR);
         $consulta->bindValue(":id", $idAluno, PDO::PARAM_INT);
+        $consulta->bindValue(":primeira", $primeira, PDO::PARAM_STR);
+        $consulta->bindValue(":segunda", $segunda, PDO::PARAM_STR);
         $consulta->execute();
     } catch(Exception $erro){
         die("Erro ao atualizar: ".$erro->getMessage());
@@ -73,4 +76,29 @@ function excluirAluno(PDO $conexao, int $idAluno): void{
     } catch (Exception $erro){
         die("Erro ao excluir: ".$erro->getMessage());
     }
+}
+
+function mediaAluno(float $primeira, float $segunda) : string
+{
+    $media = ($primeira + $segunda) / 2;
+    return number_format($media, 2);
+}
+
+
+function situacaoAluno(float $media) : string
+{
+    if($media < 5) {
+        $situacao = "Reprovado";
+    } elseif ($media >= 7) {
+        $situacao = "Aprovado";
+    } else {
+        $situacao = "Recuperação";
+    }
+
+    return $situacao;
+}
+
+function formatacaoDeNotas(float $nota) : string
+{
+    return number_format($nota, 1);
 }
